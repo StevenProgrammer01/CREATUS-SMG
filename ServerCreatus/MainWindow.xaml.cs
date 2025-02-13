@@ -17,7 +17,20 @@ namespace ServerCreatus
     {
         private ChartValues<double> _co2;
         private ChartValues<double> _o2;
+        private double _temperature;
+        private double _humidity;
 
+        public double Temperature
+        {
+            get => _temperature;
+            set { _temperature = value; OnPropertyChanged(nameof(Temperature)); }
+        }
+
+        public double Humidity
+        {
+            get => _humidity;
+            set { _humidity = value; OnPropertyChanged(nameof(Humidity)); }
+        }
         public ChartValues<double> co2
         {
             get => _co2;
@@ -28,6 +41,19 @@ namespace ServerCreatus
         {
             get => _o2;
             set { _o2 = value; OnPropertyChanged(nameof(o2)); }
+        }
+        private double _co2Level;
+        public double CO2Level
+        {
+            get => _co2Level;
+            set { _co2Level = value; OnPropertyChanged(nameof(CO2Level)); }
+        }
+
+        private double _o2Level;
+        public double O2Level
+        {
+            get => _o2Level;
+            set { _o2Level = value; OnPropertyChanged(nameof(O2Level)); }
         }
 
         public MainViewModel()
@@ -96,6 +122,15 @@ namespace ServerCreatus
                     {
                         co2Values.Add(sensorData.co2);
                         o2Values.Add(sensorData.o2);
+
+                        var viewModel = DataContext as MainViewModel;
+                        if (viewModel != null)
+                        {
+                            viewModel.CO2Level = sensorData.co2;
+                            viewModel.O2Level = sensorData.o2;
+                            viewModel.Temperature = sensorData.temperature;
+                            viewModel.Humidity = sensorData.humidity;
+                        }
 
                         // Notificar a la UI que los datos han cambiado
                         OnPropertyChanged(nameof(co2Values));

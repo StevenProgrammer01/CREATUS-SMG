@@ -5,37 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ServerCreatus" xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
         mc:Ignorable="d"
-        Title="Dashboard ESP32" Height="500" Width="800">
+        Title="Dashboard ESP32" Height="600" Width="900">
+    
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
+            <TextBlock Text="Niveles Actuales" FontSize="18" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="CO2 (ppm): " FontSize="14" FontWeight="Bold"/>
+            <TextBlock Text="{Binding CO2Level}" FontSize="14" Foreground="Red"/>
+
+            <TextBlock Text="O2 (%): " FontSize="14" FontWeight="Bold"/>
+            <TextBlock Text="{Binding O2Level}" FontSize="14" Foreground="Blue"/>
+
+            <TextBlock Text="Temperatura (°C): " FontSize="14" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Temperature}" FontSize="14" Foreground="DarkOrange"/>
+
+            <TextBlock Text="Humedad (%): " FontSize="14" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Humidity}" FontSize="14" Foreground="DarkGreen"/>
+        </StackPanel>
+
+        <!-- Columna 0, Fila 1: Controles e Historial -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Margin="10" HorizontalAlignment="Center">
+            <TextBlock Text="Controles" FontSize="18" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Button Content="Ver Historial" Width="150" Height="30" Margin="5"/>
+            <Button Content="Configuraciones" Width="150" Height="30" Margin="5"/>
+        </StackPanel>
 
         <!-- Gráfico de CO2 -->
-        <lvc:CartesianChart Grid.Row="0" Name="CO2Chart">
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries Title="CO2 ppm" 
-                                Values="{Binding co2Values}" 
-                                Stroke="Red" 
-                                Fill="Transparent"
-                                StrokeThickness="2" PointGeometrySize="8" 
-                                />
-            </lvc:CartesianChart.Series>
-        </lvc:CartesianChart>
+        <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="5" Margin="10">
+            <StackPanel>
+                <TextBlock Text="Gráfico de CO2 (ppm)" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <lvc:CartesianChart Name="CO2Chart" Height="400">
+                    <lvc:CartesianChart.Series>
+                        <lvc:LineSeries Title="CO2 ppm" Values="{Binding co2}" Stroke="Red" Fill="Transparent" StrokeThickness="2" PointGeometrySize="8"/>
+                    </lvc:CartesianChart.Series>
+                </lvc:CartesianChart>
+            </StackPanel>
+        </Border>
 
-        <!-- Gráfico de O2 -->
-        <lvc:CartesianChart Grid.Row="1" Name="O2Chart">
-            <lvc:CartesianChart.Series>
-                <lvc:LineSeries Title="O2 0-25%"
-                                Values="{Binding o2Values}"
-                                Stroke="Blue"
-                                Fill="Transparent"
-                                StrokeThickness="2"
-                                PointGeometrySize="8"
-                                />
-            </lvc:CartesianChart.Series>
-        </lvc:CartesianChart>
+        <!-- Columna 1, Fila 1: Gráfico O2 con Borde -->
+        <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="2" CornerRadius="10" Padding="5" Margin="10">
+            <StackPanel>
+                <TextBlock Text="Gráfico de O2 (%)" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <lvc:CartesianChart Name="O2Chart" Height="400">
+                    <lvc:CartesianChart.Series>
+                        <lvc:LineSeries Title="O2 %" Values="{Binding o2}" Stroke="Blue" Fill="Transparent" StrokeThickness="2" PointGeometrySize="8"/>
+                    </lvc:CartesianChart.Series>
+                </lvc:CartesianChart>
+            </StackPanel>
+        </Border>
+        
 
     </Grid>
 </Window>
