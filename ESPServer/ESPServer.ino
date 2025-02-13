@@ -44,10 +44,10 @@ DFRobot_GAS_I2C gas(&Wire ,I2C_ADDRESS);
 #endif
 #endif
 
-const char* ssid = "Steven"; 
-const char* password = "steven123";
-const char* serverIP = "192.168.107.129";  // IP de tu PC
-const int serverPort = 8000;
+const char* ssid = "Steven"; // nombre de la red
+const char* password = "steven123"; //clave del wifi
+const char* serverIP = "192.168.107.129"; // IP del servidor
+const int serverPort = 8000; //puerto de comunicación
 void interruptChange()
 
 {
@@ -111,11 +111,11 @@ void setup() {
 
 void loop() {
 
-  StaticJsonDocument<200> doc;
-  char buffer[128];
+  StaticJsonDocument<200> doc; //texto json donde se guardan los datos recogidos de los sensores
+  char buffer[128]; //buffer de datos
 
-  float concentration;
-  //WiFiClient client = server.available(); // Escucha por clientes entrantes
+  float concentration; //variable que contempla los valores del CO2
+  
   
     
   Serial.println("Esperando datos...");
@@ -152,7 +152,7 @@ void loop() {
   Serial.print("Ambient ");
   Serial.print(gas.queryGasType());
   Serial.print(" concentration is: ");
-  Serial.print(gas.readGasConcentrationPPM());
+  Serial.print(gas.readGasConcentrationPPM());// línea que muestra el porcentaje de oxígeno en volúmen
   Serial.println(" %vol");
 
   doc["o2"] =  gas.readGasConcentrationPPM();
@@ -160,7 +160,8 @@ void loop() {
   doc["temperature"] = temp;
   doc["humidity"] = humidity;
 
-  //cadena = String(gas.readGasConcentrationPPM())+"@"+String(concentration)+"@"+String(temp)+"@"+String(humidity);
+  
+  //Envío de los datos al server
 
   size_t len = serializeJson(doc, buffer);
   if (concentration > 0){
